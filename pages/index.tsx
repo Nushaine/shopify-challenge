@@ -90,6 +90,9 @@ const Home: NextPage = () => {
             )
           })}
         </div>
+        <a href={"https://www.figma.com/file/dAppX5VePreY2nIsA1HZgu/Shopify-Project?node-id=0%3A1"} rel="noopener noreferrer" target="_blank" className={styles.figmaIcon}>
+          <img src={"/figma.svg"} className={styles.figma} style={{height: '18px', width: '18px'}} />
+        </a>
       </main>
 
       <footer className={`${styles.imgsLoadedModal} ${styles.fadeIn}`}>
