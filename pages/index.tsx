@@ -1,9 +1,94 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
+import NASAImage from '../components/image'
 import styles from '../styles/Home.module.css'
+import React, {useEffect, useState, useRef} from "react"
+import getNasaImages from './api/api'
+
 
 const Home: NextPage = () => {
+  let IMG_PER_RENDER = 48
+  // state variables
+  const [imageList, setImageList] = useState([] as any[])
+  const imageRef = useRef([] as any[])
+  const endOfList = useRef(IMG_PER_RENDER)
+  const [scrollYOffset, setYScroll] = useState(0)
+  const [isAtBottom, setBottom] = useState(false)
+
+  useEffect(() => {
+    // get images from API (populate imageRef)
+    async function getData() {
+      let curiosity: any = await getNasaImages("curiosity")
+      let spirit: any = await getNasaImages("spirit")
+      let opportunity: any = await getNasaImages("opportunity")
+      if(curiosity != undefined && spirit != undefined && opportunity != undefined) {
+        imageRef.current = [...spirit.photos, ...opportunity.photos, ...curiosity.photos]
+        renderMoreImages(endOfList.current, imageRef.current)
+      }
+    }
+
+    // call getData only on initial render
+    if(imageRef.current.length == 0) {
+      getData()
+    }
+  }, [])
+
+
+
+  useEffect(() => {
+    function updateCurrentWidth() {
+      // update width everytime user scrolls
+      setYScroll(window.scrollY)  
+    }
+
+    if(document.documentElement.offsetHeight < scrollYOffset + window.innerHeight && imageRef.current.length != 0) {
+      // call this when the user reaches the bottom of the screen
+      setBottom(true)
+      if(endOfList.current < imageRef.current.length) {
+        endOfList.current += IMG_PER_RENDER
+        console.log('UL', endOfList.current, imageRef.current)
+        renderMoreImages(endOfList.current, imageRef.current)
+      }
+    }
+
+    if(document.documentElement.offsetHeight > scrollYOffset + window.innerHeight && imageRef.current.length != 0) {
+      // this inverts the state if the user was at the bottom of the screen but isnt anymore
+      setBottom(false)
+    }
+
+    updateCurrentWidth()
+    if (typeof window !== 'undefined') {
+      [window.addEventListener('scroll', updateCurrentWidth)]
+    }
+  })
+
+  // render images (update a portion of imageRef to imageList state)
+  function renderMoreImages(endOfList: number, images: any) {
+    console.log(images.length)
+    // make sure not to index the list more than there are entries in the list
+    //console.log(endOfList, images, images.length, endOfList > images.length ? 'images.length' : 'endOfList')
+    let portion = JSON.parse(JSON.stringify(images)).slice(endOfList-IMG_PER_RENDER, endOfList)
+    console.log('portions', portion.length, endOfList-IMG_PER_RENDER, endOfList)
+    let updatedImageList = [...imageList, ...portion]
+    setImageList(updatedImageList)
+  }
+  
+  // error with api
+  if (imageList == undefined) return <div></div>
+
+  // still loading in data
+  if (imageList.length == 0) {
+    return (
+      <div>
+        <h1>loading....</h1>
+      </div>
+    )
+  }
+
+  console.log('IL', imageList.length)
+
+  // data loaded
   return (
     <div className={styles.container}>
       <Head>
@@ -13,58 +98,19 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.tsx</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+        <div className={styles.imageContainer}>
+          {imageList.map((imageObj: any, index: number) => {
+            //console.log('io', imageObj)
+            return (
+              <NASAImage key={index} date={imageObj.earth_date} imageLink={imageObj.img_src} name={imageObj.rover.name} camera={imageObj.camera.name}/>
+            )
+          })}
         </div>
       </main>
 
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
+      <footer className={`${styles.loadingModal} ${styles.fadeIn}`}>
+          <p className={styles.loadingText}>{endOfList.current > imageRef.current.length ? imageRef.current.length : endOfList.current} / {imageRef.current.length}</p>
+        </footer>
     </div>
   )
 }
