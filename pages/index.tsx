@@ -1,14 +1,10 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
 import NASAImage from '../components/image'
 import styles from '../styles/Home.module.css'
 import React, {useEffect, useState, useRef} from "react"
 import getNasaImages from './api/api'
-import Filter from '../components/filter'
-import FilterLoadingRow from '../components/loading/filterLoadingRow'
 import ImageLoadingRow from '../components/loading/imageLoadingRow'
-import ImageSkeleton from '../components/loading/imageSkeleton'
 
 
 const Home: NextPage = () => {
@@ -47,7 +43,7 @@ const Home: NextPage = () => {
 
     if(document.documentElement.offsetHeight < scrollYOffset + window.innerHeight && imageRef.current.length != 0) {
       // call this when the user reaches the bottom of the screen
-      //setBottom(true)
+      setBottom(true)
       if(endOfList.current < imageRef.current.length) {
         endOfList.current += IMG_PER_RENDER
         renderMoreImages(endOfList.current, imageRef.current)
@@ -56,7 +52,7 @@ const Home: NextPage = () => {
 
     if(document.documentElement.offsetHeight > scrollYOffset + window.innerHeight && imageRef.current.length != 0) {
       // this inverts the state if the user was at the bottom of the screen but isnt anymore
-      //setBottom(false)
+      setBottom(false)
     }
 
     updateCurrentWidth()
@@ -81,16 +77,15 @@ const Home: NextPage = () => {
   if (imageList.length == 0) {
     return (
       <main className={styles.mainLoading}>
-        <FilterLoadingRow />  
+        {/* <FilterLoadingRow /> */}  
         <ImageLoadingRow />
         <ImageLoadingRow />
       </main>
     )
   }
 
- /*  return (
+/*   return (
     <main className={styles.mainLoading}>
-      <FilterLoadingRow />  
       <ImageLoadingRow />
       <ImageLoadingRow />
     </main>
@@ -106,14 +101,14 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <div className={styles.filterContainer}>
+        {/* <div className={styles.filterContainer}>
           <div className={styles.filters}>
             <Filter img='radio' text='ALL ROVERS' />
             <Filter img='camera' text='ALL CAMERAS' />
             <Filter img='calendar' text='ALL DATES' />  
           </div>
           
-        </div>
+        </div> */}
         <div className={styles.imageContainer}>
           {imageList.map((imageObj: any, index: number) => {
             //console.log('io', imageObj)

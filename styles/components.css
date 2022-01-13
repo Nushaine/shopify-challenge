@@ -132,11 +132,12 @@ p {
 }
 
 .img-title {
-  font-size: 21px;
+  font-size: 18px;
   font-family: Inter, sans-serif;
   font-weight: 400;
   color: rgba(152, 162, 179, 1);
   word-wrap: break-word;
+  margin-top: 10px;
 }
 
 /* TAG COMPONENT */
@@ -248,8 +249,14 @@ p {
   width: 33%;
 }
 
+.text-skeleton {
+  background-color: #F2F4F7;
+  height: 23px;
+  width: 60%;
+}
+
 .loading-animation {
-  background: linear-gradient(267deg, #d0d5dd, #E4E7EC, #d0d5dd);
+  background: linear-gradient(267deg, #E4E7EC, #FCFCFD, #E4E7EC);
   background-size: 600% 600%;
   animation: loading 2s ease infinite;  
   -webkit-animation: loading 2s ease infinite;
