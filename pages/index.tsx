@@ -5,6 +5,10 @@ import NASAImage from '../components/image'
 import styles from '../styles/Home.module.css'
 import React, {useEffect, useState, useRef} from "react"
 import getNasaImages from './api/api'
+import Filter from '../components/filter'
+import FilterLoadingRow from '../components/loading/filterLoadingRow'
+import ImageLoadingRow from '../components/loading/imageLoadingRow'
+import ImageSkeleton from '../components/loading/imageSkeleton'
 
 
 const Home: NextPage = () => {
@@ -35,7 +39,6 @@ const Home: NextPage = () => {
   }, [])
 
 
-
   useEffect(() => {
     function updateCurrentWidth() {
       // update width everytime user scrolls
@@ -44,17 +47,16 @@ const Home: NextPage = () => {
 
     if(document.documentElement.offsetHeight < scrollYOffset + window.innerHeight && imageRef.current.length != 0) {
       // call this when the user reaches the bottom of the screen
-      setBottom(true)
+      //setBottom(true)
       if(endOfList.current < imageRef.current.length) {
         endOfList.current += IMG_PER_RENDER
-        console.log('UL', endOfList.current, imageRef.current)
         renderMoreImages(endOfList.current, imageRef.current)
       }
     }
 
     if(document.documentElement.offsetHeight > scrollYOffset + window.innerHeight && imageRef.current.length != 0) {
       // this inverts the state if the user was at the bottom of the screen but isnt anymore
-      setBottom(false)
+      //setBottom(false)
     }
 
     updateCurrentWidth()
@@ -67,9 +69,7 @@ const Home: NextPage = () => {
   function renderMoreImages(endOfList: number, images: any) {
     console.log(images.length)
     // make sure not to index the list more than there are entries in the list
-    //console.log(endOfList, images, images.length, endOfList > images.length ? 'images.length' : 'endOfList')
     let portion = JSON.parse(JSON.stringify(images)).slice(endOfList-IMG_PER_RENDER, endOfList)
-    console.log('portions', portion.length, endOfList-IMG_PER_RENDER, endOfList)
     let updatedImageList = [...imageList, ...portion]
     setImageList(updatedImageList)
   }
@@ -80,13 +80,21 @@ const Home: NextPage = () => {
   // still loading in data
   if (imageList.length == 0) {
     return (
-      <div>
-        <h1>loading....</h1>
-      </div>
+      <main className={styles.mainLoading}>
+        <FilterLoadingRow />  
+        <ImageLoadingRow />
+        <ImageLoadingRow />
+      </main>
     )
   }
 
-  console.log('IL', imageList.length)
+ /*  return (
+    <main className={styles.mainLoading}>
+      <FilterLoadingRow />  
+      <ImageLoadingRow />
+      <ImageLoadingRow />
+    </main>
+  ) */
 
   // data loaded
   return (
@@ -98,6 +106,14 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
+        <div className={styles.filterContainer}>
+          <div className={styles.filters}>
+            <Filter img='radio' text='ALL ROVERS' />
+            <Filter img='camera' text='ALL CAMERAS' />
+            <Filter img='calendar' text='ALL DATES' />  
+          </div>
+          
+        </div>
         <div className={styles.imageContainer}>
           {imageList.map((imageObj: any, index: number) => {
             //console.log('io', imageObj)
