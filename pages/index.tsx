@@ -26,7 +26,6 @@ const Home: NextPage = () => {
         renderMoreImages(endOfList.current, imageRef.current)
       }
     }
-
     // call getData only on initial render
     if(imageRef.current.length == 0) {
       getData()
@@ -40,11 +39,8 @@ const Home: NextPage = () => {
       setYScroll(window.scrollY)  
     }
 
-    console.log(document.documentElement.offsetHeight - 5 < scrollYOffset + window.innerHeight && imageRef.current.length != 0, document.documentElement.offsetHeight, scrollYOffset + window.innerHeight)
     if(document.documentElement.offsetHeight - 5 < scrollYOffset + window.innerHeight && imageRef.current.length != 0) {
       // call this when the user reaches the bottom of the screen
-      console.log('trigeredd!')
-      console.log(endOfList.current < imageRef.current.length, endOfList.current, imageRef.current.length)
       if(endOfList.current < imageRef.current.length) {
         endOfList.current += IMG_PER_RENDER
         renderMoreImages(endOfList.current, imageRef.current)
@@ -59,7 +55,6 @@ const Home: NextPage = () => {
 
   // render images (update a portion of imageRef to imageList state)
   function renderMoreImages(endOfList: number, images: any) {
-    console.log(images.length)
     // make sure not to index the list more than there are entries in the list
     let portion = JSON.parse(JSON.stringify(images)).slice(endOfList-IMG_PER_RENDER, endOfList)
     let updatedImageList = [...imageList, ...portion]
@@ -73,7 +68,6 @@ const Home: NextPage = () => {
   if (imageList.length == 0) {
     return (
       <main className={styles.mainLoading}>
-        {/* <FilterLoadingRow /> */}  
         <ImageLoadingRow />
       </main>
     )
@@ -98,8 +92,8 @@ const Home: NextPage = () => {
         </div>
       </main>
 
-      <footer className={`${styles.loadingModal} ${styles.fadeIn}`}>
-          <p className={styles.loadingText}>{endOfList.current > imageRef.current.length ? imageRef.current.length : endOfList.current} / {imageRef.current.length}</p>
+      <footer className={`${styles.imgsLoadedModal} ${styles.fadeIn}`}>
+          <p className={styles.imgLoaded}>{endOfList.current > imageRef.current.length ? imageRef.current.length : endOfList.current} / {imageRef.current.length}</p>
         </footer>
     </div>
   )

@@ -14,3 +14,46 @@ a {
 * {
   box-sizing: border-box;
 }
+
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-row-vcenter-hcenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-col-hcenter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.flex-row-hsb {
+  display: flex;
+  justify-content: space-between;
+}
+
+.flex-hcenter {
+  justify-content: center;
+}
+
+:root {
+  --gray-25: #FCFCFD;
+  --gray-50: #fafafa;
+  --gray-100: #F2F4F7;
+  --gray-200: #E4E7EC;
+  --gray-250: #eaeaea;
+  --gray-400: #98a2b3;
+  --gray-900: #101828;
+  --gradient-shadow-bg: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 100%);
+}
