@@ -1,6 +1,6 @@
 /* Container */
 
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
 p {
   margin: 0;
@@ -134,7 +134,7 @@ p {
 .img-title {
   font-size: 18px;
   font-family: Inter, sans-serif;
-  font-weight: 400;
+  font-weight: 500;
   color: rgba(152, 162, 179, 1);
   word-wrap: break-word;
   margin-top: 10px;
@@ -165,7 +165,7 @@ p {
   font-family: Inter;
   font-size: 12px;
   font-style: normal;
-  font-weight: 700;
+  font-weight: 500;
   line-height: 19px;
   letter-spacing: 0.05em;
   text-align: center;
@@ -210,36 +210,11 @@ p {
   word-wrap: break-word;
 }
 
-/* FILTER COMPONENT */
-
-.filter-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 5px 14px;
-  background: #F2F4F7;
-  opacity: 0.7;
-  border-radius: 2.5px;
-  gap: 10px;
-  cursor: pointer;
-  transition: 0.1s ease-in-out;
-}
-
-.filter-container:hover {
-  opacity: 1;
-}
-
 /* LOADING SKELETONS */
-
-.filter-skeleton {
-  width: 145px;
-  height: 30px;
-  background-color: #F2F4F7;
-}
 
 .image-skeleton {
   height: 335px;
+  width: 100%;
   background-color: #F2F4F7;
 }
 

@@ -30,10 +30,6 @@ export default function NASAImage(props: {date: string, imageLink: string, name:
         
       </div>
       <div className="flex-col">
-        {/* <div className="info flex-row">
-          <Tag img="rover" text={props.name} />
-          <Tag img="camera" text={props.camera} />
-        </div> */}
         <Tag img="date" text={props.date} />
         <p className="img-title">{props.name} Rover - {props.camera}</p>
       </div>

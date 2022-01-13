@@ -1,28 +1,6 @@
 import React from 'react'
-import { Camera, Calendar, Radio } from 'react-feather';
+import { Calendar } from 'react-feather';
 import ToolTip from './tooltip';
-
-/* function renderImage(imageType: string) {
-  if(imageType == 'camera') {
-    return <Camera color="rgba(152, 162, 179, 1)" size={16} />
-  } else if(imageType == 'date') {
-    return <Calendar color="rgba(152, 162, 179, 1)" size={16} />
-  } else if(imageType == 'rover') {
-    return <Radio color="rgba(152, 162, 179, 1)" size={16} />
-  }
-}
-
-function getToolTipText(text: string, img: string) {
-  if(img == 'camera') {
-    return "Camera Type"
-  } else if (img == 'date') {
-    return "Date Taken"
-  } else if (img == "rover") {
-    return `${text} Rover`
-  } else {
-    return "--"
-  }
-} */
 
 export default function Tag(props: {img: string, text: string}) {
   return (

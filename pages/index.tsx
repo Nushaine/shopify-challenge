@@ -8,13 +8,12 @@ import ImageLoadingRow from '../components/loading/imageLoadingRow'
 
 
 const Home: NextPage = () => {
-  let IMG_PER_RENDER = 48
+  const IMG_PER_RENDER = 48
   // state variables
   const [imageList, setImageList] = useState([] as any[])
   const imageRef = useRef([] as any[])
   const endOfList = useRef(IMG_PER_RENDER)
   const [scrollYOffset, setYScroll] = useState(0)
-  const [isAtBottom, setBottom] = useState(false)
 
   useEffect(() => {
     // get images from API (populate imageRef)
@@ -41,18 +40,15 @@ const Home: NextPage = () => {
       setYScroll(window.scrollY)  
     }
 
-    if(document.documentElement.offsetHeight < scrollYOffset + window.innerHeight && imageRef.current.length != 0) {
+    console.log(document.documentElement.offsetHeight - 5 < scrollYOffset + window.innerHeight && imageRef.current.length != 0, document.documentElement.offsetHeight, scrollYOffset + window.innerHeight)
+    if(document.documentElement.offsetHeight - 5 < scrollYOffset + window.innerHeight && imageRef.current.length != 0) {
       // call this when the user reaches the bottom of the screen
-      setBottom(true)
+      console.log('trigeredd!')
+      console.log(endOfList.current < imageRef.current.length, endOfList.current, imageRef.current.length)
       if(endOfList.current < imageRef.current.length) {
         endOfList.current += IMG_PER_RENDER
         renderMoreImages(endOfList.current, imageRef.current)
       }
-    }
-
-    if(document.documentElement.offsetHeight > scrollYOffset + window.innerHeight && imageRef.current.length != 0) {
-      // this inverts the state if the user was at the bottom of the screen but isnt anymore
-      setBottom(false)
     }
 
     updateCurrentWidth()
@@ -79,17 +75,9 @@ const Home: NextPage = () => {
       <main className={styles.mainLoading}>
         {/* <FilterLoadingRow /> */}  
         <ImageLoadingRow />
-        <ImageLoadingRow />
       </main>
     )
   }
-
-/*   return (
-    <main className={styles.mainLoading}>
-      <ImageLoadingRow />
-      <ImageLoadingRow />
-    </main>
-  ) */
 
   // data loaded
   return (
@@ -101,17 +89,8 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        {/* <div className={styles.filterContainer}>
-          <div className={styles.filters}>
-            <Filter img='radio' text='ALL ROVERS' />
-            <Filter img='camera' text='ALL CAMERAS' />
-            <Filter img='calendar' text='ALL DATES' />  
-          </div>
-          
-        </div> */}
         <div className={styles.imageContainer}>
           {imageList.map((imageObj: any, index: number) => {
-            //console.log('io', imageObj)
             return (
               <NASAImage key={index} date={imageObj.earth_date} imageLink={imageObj.img_src} name={imageObj.rover.name} camera={imageObj.camera.name}/>
             )
